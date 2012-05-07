@@ -1,0 +1,30 @@
+<%- model_class = @profile.class -%>
+<h1><%=t '.title', :default => model_class.model_name.human %></h1>
+
+<p>
+  <strong><%= model_class.human_attribute_name(:user_id) %>:</strong><br>
+  <%= @profile.user_id %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:name) %>:</strong><br>
+  <%= @profile.name %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:surname) %>:</strong><br>
+  <%= @profile.surname %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:age) %>:</strong><br>
+  <%= @profile.age %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:description) %>:</strong><br>
+  <%= @profile.description %>
+</p>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              users_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_profile_path(@profile), :class => 'btn' %>
+</div>

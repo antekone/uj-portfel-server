@@ -1,0 +1,46 @@
+<%- model_class = Transaction.new.class -%>
+<h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:account_id) %></th>
+      <th><%= model_class.human_attribute_name(:value) %></th>
+      <th><%= model_class.human_attribute_name(:date) %></th>
+      <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:tag_names) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= link_to transaction.id, transaction_path(transaction) %></td>
+        <td><%= link_to transaction.user_id, user_path(transaction.user_id) %></td>
+        <td><%= link_to transaction.account_id, account_path(transaction.account_id) %></td>
+        <td><%= money transaction.value, transaction.account.currency %></td>
+        <td><%=l transaction.date, format: :long %></td>
+        <td><%= transaction.description %></td>
+        <td><%= transaction.tag_names %></td>
+        <td><%=l transaction.created_at, format: :long %></td>
+        <td><%=l transaction.updated_at, format: :long %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_transaction_path(transaction), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      transaction_path(transaction),
+                      :method => :delete,
+                      :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_transaction_path,
+            :class => 'btn btn-primary' %>
