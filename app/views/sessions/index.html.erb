@@ -1,0 +1,29 @@
+<%- model_class = ActiveRecord::SessionStore::Session.new.class -%>
+<h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:token) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td><%= session.token %></td>
+        <td><%= l session.created_at, format: :long %></td>
+        <td><%= l session.updated_at, format: :long %></td>
+        <td>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      session_path(session),
+                      :method => :delete,
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

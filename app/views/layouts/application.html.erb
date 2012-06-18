@@ -19,10 +19,12 @@
         <a class="brand" href="#">Wallet</a>
         <div class="nav-collapse">
           <ul class="nav">
+            <li><%= link_to "Sessions", sessions_path %></li>
             <li><%= link_to "Users", users_path %></li>
             <li><%= link_to "Invitations", invitations_path %></li>
             <li><%= link_to "Accounts", accounts_path %></li>
             <li><%= link_to "Transactions", transactions_path %></li>
+            <li><%= link_to "Logout", logout_path %></li>
           </ul>
         </div>
       </div>
@@ -31,7 +33,10 @@
 
   <div class="container">
     <div class="row">
-      <div class="span12"><%= yield %></div>
+      <div class="span12">
+        <%= render_flash_messages %>
+        <%= yield %>
+      </div>
     </div>
   </div>
 </body>

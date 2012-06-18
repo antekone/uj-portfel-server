@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :shared_accounts, through: :received_invitations, source: :account
   has_many :transactions, dependent: :delete_all
   has_many :tags, dependent: :delete_all
+  has_many :sessions, dependent: :delete_all
   
   has_secure_password
   attr_accessible :email, :phone, :password, :password_confirmation

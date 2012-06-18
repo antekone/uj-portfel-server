@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_filter :authorize!
   before_filter :load_account, :only => [:show, :edit, :update, :destroy]
   
   def index

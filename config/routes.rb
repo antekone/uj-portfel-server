@@ -1,4 +1,8 @@
 Wallet::Application.routes.draw do
+  get  '/login'  => 'sessions#new'
+  post '/login'  => 'sessions#create'
+  get  '/logout' => 'sessions#destroy'
+  resources :sessions
   resources :users
   resources :profiles
   resources :invitations

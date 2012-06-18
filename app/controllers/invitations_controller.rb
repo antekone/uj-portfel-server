@@ -1,4 +1,5 @@
 class InvitationsController < ApplicationController
+  before_filter :authorize!
   before_filter :load_invitation, :only => [:show, :edit, :update, :destroy]
   
   def index

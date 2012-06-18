@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
+  before_filter :authorize!, except: [:index, :new, :create]
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
   
   def index
-    respond_with(@users = User.all)
+    @users = current_user ? User.all : []
+    respond_with(@users)
   end
   
   def show

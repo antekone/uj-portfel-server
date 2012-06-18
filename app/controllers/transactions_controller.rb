@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_filter :authorize!
   before_filter :load_transaction, :only => [:show, :edit, :update, :destroy]
   
   def index
