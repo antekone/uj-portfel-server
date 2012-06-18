@@ -78,3 +78,57 @@ Obsługa portfela - część serwerowa.
       `{"result":"0"}`
 
 ## Konta
+* ### lista wszystkich kont  
+  Pobieranie listy kont zalogowanego użytkownika
+  `curl -v -X GET http://localhost:3000/accounts.json?token=TOKEN`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość (tablica):  
+      `[{"balance_in_cents":0,  "created_at":"2012-06-18T11:14:07Z",  "currency":"PLN",  "id":5,  "public":true,  "updated_at":"2012-06-18T11:14:07Z",  "user_id":3,  "balance":0.0}]`
+
+* ### podgląd jednego konta  
+  Pobieranie parametrów 1 konta zalogowanego użytkownika
+  `curl -v -X GET http://localhost:3000/accounts/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość:  
+      `{"balance_in_cents":0,  "created_at":"2012-06-18T11:14:07Z",  "currency":"PLN",  "id":5,  "public":true,  "updated_at":"2012-06-18T11:14:07Z",  "user_id":3,  "balance":0.0}`
+
+* ### dodawanie nowego  
+  Utworzenie nowego konta spowoduje przypisanie go do zalogowanego użytkownika.  
+  `curl -v -X POST -d "account[currency]=PLN&account[public]=true&account[balance]=0.0" http://localhost:3000/accounts.json?token=TOKEN`
+  Dostępne waluty: "PLN", "USD", "EUR"
+  
+  __Poprawny rezultat__
+    * Status HTTP: 201
+    * Zawartość:  
+      `{"created_at":"2012-06-18T10:25:36Z",
+        "public":"true",
+        "id":2,
+        "balance":"0.0",
+        "balance_in_cents":"0",
+        "updated_at":"2012-06-18T10:25:36Z",
+        "currency":"PLN"}`
+  
+  __Błędy walidacji__
+    * Status HTTP: 422
+    * Zawartość:  
+      `{"errors":{"user_id":["can't be blank"]}}` - brak użytkownika  
+      `{"errors":{"currency":["can't be blank"]}}` - brak wybranej waluty
+      
+* ### edycja  
+  `curl -v -X PUT -d "account[currency]=PLN" http://localhost:3000/accounts/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 204
+
+  __Błędy walidacji__ - identyczne jak przy tworzeniu.
+      
+* ### usuwanie
+  `curl -v -X DELETE http://localhost:3000/accounts/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 204
+  

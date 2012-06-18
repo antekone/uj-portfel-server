@@ -2,11 +2,10 @@ class Account < ActiveRecord::Base
   belongs_to :user
   has_many :transactions, dependent: :delete_all
   
-  attr_accessible :user_id, :public, :currency, :balance
+  attr_accessible :public, :currency, :balance
   
   validates :user_id, presence: true
   validates :currency, presence: true
-  validates :user_id, presence: true
   
   def balance
     read_attribute(:balance_in_cents).to_f/100

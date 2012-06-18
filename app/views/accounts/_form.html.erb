@@ -1,7 +1,6 @@
 <%= simple_form_for @account, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.association :user, label_method: :email_with_phone %>
-  <%= f.input :public %>
   <%= f.input :currency, collection: [:EUR, :PLN, :USD] %>
+  <%= f.input :public %>
   <% if @account.new_record? %>
     <%= f.input :balance %>
   <% end %>
