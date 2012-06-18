@@ -38,6 +38,10 @@ class User < ActiveRecord::Base
     self.sent_invitations.all + self.received_invitations.all
   end
   
+  def token
+    self.session.try(:token)
+  end
+  
   def as_json(options={})
     super(options.merge!(except: [:password_digest]))
   end

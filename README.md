@@ -1,0 +1,80 @@
+# Wirtualny Portfel - server 
+
+Obsługa portfela - część serwerowa.
+
+## Użytkownicy  
+* ### rejestracja nowego użytkownika  
+  Po rejestracji tworzony jest profil użytkownika oraz konto podstawowe z domyślną walutą PLN.
+  Zwracany jest również TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.
+  
+  `curl -v -X POST -d "user[email]=foo@bar.com&user[phone]=123456&user[password]=abc123&user[password_confirmation]=abc123" http://localhost:3000/users.json`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 201
+    * Zawartość:  
+      `{"created_at":"2012-06-18T10:25:36Z",
+        "email":"foo@bar.com",
+        "id":1,
+        "phone":"123456",
+        "updated_at":"2012-06-18T10:25:36Z",
+        "token":TOKEN}`
+  
+  __Błędy walidacji__
+    * Status HTTP: 422
+    * Zawartość:  
+      `{"errors":{"email":["has already been taken"]}}` - wykorzystany e-mail  
+      `{"errors":{"phone":["has already been taken"]}}` - wykorzystany telefon  
+      `{"errors":{"password":["doesn't match confirmation"]}}` - niepoprawne powtórzenie hasła  
+      `{"errors":{"password_digest":["can't be blank"]}}` - brak hasła  
+
+* ### aktualizacja użytkownika  
+  Można aktualizować tylko konto na którym jest się zalogowanym.  
+  `curl -v -X PUT -d "user[email]=foo.baz@bar.com" http://localhost:3000/users/ID.json?token=TOKEN`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 204
+    
+  __Błędy walidacji__ - identyczne jak przy tworzeniu użytkownika.
+    
+* ### usuwanie użytkownika
+  Można usunąć tylko konto na którym jest się zalogowanym. Usuwane są wszystkie informacje o użytkowniku, jego profil, transakcje. 
+  `curl -v -X DELETE http://localhost:3000/users/ID.json?token=TOKEN`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 204
+
+### Sesje
+* ### logowanie  
+  Aby zalogować się do systemu trzeba podać swój e-mail i hasło.
+  Zwracany jest TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.
+  
+  `curl -v -X POST -d "email=foo@bar.com&password=abc123" http://localhost:3000/login.json`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość:  
+      `{"result":"1", "token":TOKEN}`
+  
+  __Błędy walidacji__
+    * Status HTTP: 401
+    * Zawartość:  
+      `{"result":"0"}`
+
+* ### wylogowanie  
+  Można wylogować tylko konto na którym jest się zalogowanym. Po wylogowaniu usuwana jest aktywna sesja.  
+  `curl -v -X GET http://localhost:3000/logout.json?token=TOKEN`
+  
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość:  
+      `{"result":"1"}`
+      
+* ### status
+  Jeśli upłynął termin ważności tokena lub gdy użytkownik poda niepoprawny token każde żądanie zostanie odrzucone.
+  
+  __Rezultat__
+    * Status HTTP: 401
+    * Zawartość:  
+      `{"result":"0"}`
+
+### Konta

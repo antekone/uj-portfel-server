@@ -1,3 +1,0 @@
-== uj-portfel-server
-
-Obsługa portfela - część serwerowa
