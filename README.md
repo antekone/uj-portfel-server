@@ -183,12 +183,8 @@ Obsługa portfela - część serwerowa.
   __Poprawny rezultat__
     * Status HTTP: 201
     * Zawartość:  
-```ruby
-f.input :country_id, :collection => @continents, :as => :grouped_select, :group_method => :countries
-```
-```erb
-  {"account_id":5,  "attachment_content_type":null,  "attachment_file_name":null,  "attachment_file_size":null,  "attachment_updated_at":null,  "created_at":"2012-06-18T12:36:19Z",  "date":"2012-06-18", "description":"",  "id":5,  "updated_at":"2012-06-18T12:36:19Z",  "user_id":3,  "value_in_cents":55500,  "value":555.0}
-```
+      `{"account_id":5,  "attachment_content_type":null,  "attachment_file_name":null,  "attachment_file_size":null,  "attachment_updated_at":null,  "created_at":"2012-06-18T12:36:19Z",  "date":"2012-06-18", "description":"",  "id":5,  "updated_at":"2012-06-18T12:36:19Z",  "user_id":3,  "value_in_cents":55500,  "value":555.0}
+`
 
   __Błędy walidacji__
     * Status HTTP: 422
