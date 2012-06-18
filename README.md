@@ -43,7 +43,7 @@ Obsługa portfela - część serwerowa.
   __Poprawny rezultat__
     * Status HTTP: 204
 
-### Sesje
+## Sesje
 * ### logowanie  
   Aby zalogować się do systemu trzeba podać swój e-mail i hasło.
   Zwracany jest TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.
@@ -77,4 +77,4 @@ Obsługa portfela - część serwerowa.
     * Zawartość:  
       `{"result":"0"}`
 
-### Konta
+## Konta
