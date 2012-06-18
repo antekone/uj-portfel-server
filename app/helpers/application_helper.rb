@@ -8,6 +8,6 @@ module ApplicationHelper
   end
   
   def render_flash_message(type=nil)
-    content_tag(:div, (content_tag(:p, flash[type.to_sym])), :id => "flash-#{type}", :class => "alert-message #{type}") if flash[type.to_sym].present?
+    content_tag(:div, (content_tag(:p, flash[type.to_sym])), :id => "flash-#{type}", :class => "alert") if flash[type.to_sym].present?
   end
 end

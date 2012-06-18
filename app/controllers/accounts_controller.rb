@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
   before_filter :load_account, :only => [:show, :edit, :update, :destroy]
   
   def index
-    respond_with(@accounts = Account.all)
+    respond_with(@accounts = current_user.accounts.all)
   end
   
   def show
@@ -11,11 +11,11 @@ class AccountsController < ApplicationController
   end
   
   def new
-    respond_with(@account = Account.new)
+    respond_with(@account = current_user.accounts.new)
   end
   
   def create
-    @account = Account.new(params[:account])
+    @account = current_user.accounts.new(params[:account])
     @account.save
     respond_with(@account)
   end
@@ -36,6 +36,6 @@ class AccountsController < ApplicationController
   
   private
     def load_account
-      @account = Account.find(params[:id])
+      @account = current_user.accounts.find(params[:id])
     end
 end

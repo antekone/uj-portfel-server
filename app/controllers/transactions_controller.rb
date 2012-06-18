@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   before_filter :load_transaction, :only => [:show, :edit, :update, :destroy]
   
   def index
-    respond_with(@transactions = Transaction.all)
+    respond_with(@transactions = current_user.transactions.all)
   end
   
   def show
@@ -11,11 +11,11 @@ class TransactionsController < ApplicationController
   end
   
   def new
-    respond_with(@transaction = Transaction.new)
+    respond_with(@transaction = current_user.transactions.new)
   end
   
   def create
-    @transaction = Transaction.new(params[:transaction])
+    @transaction = current_user.transactions.new(params[:transaction])
     @transaction.save
     respond_with(@transaction)
   end
@@ -36,6 +36,6 @@ class TransactionsController < ApplicationController
   
   private
     def load_transaction
-      @transaction = Transaction.find(params[:id])
+      @transaction = current_user.transactions.find(params[:id])
     end
 end

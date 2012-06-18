@@ -17,7 +17,7 @@
     <% @accounts.each do |account| %>
       <tr>
         <td><%= link_to account.id, account_path(account) %></td>
-        <td><%= link_to account.user_id, user_path(account.user_id) %></td>
+        <td><%= link_to account.user.email_with_phone, user_path(account.user_id) %></td>
         <td><%= account.public %></td>
         <td><%= account.currency %></td>
         <td><%=money account.balance, account.currency %></td>

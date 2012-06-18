@@ -17,14 +17,14 @@ class SessionsController < ApplicationController
     user = User.find_by_email(email.try(:downcase))
     respond_to do |format|
       if user && user.authenticate(password)
-        user.sessions.destroy_all
-        user_session = Session.create({user: user}, without_protection: true)
+        user.session.try(:destroy)
+        user.create_session
         format.html do
           session[:user_id] = user.id
           flash[:notice] = "Successfully logged in..."
           redirect_to(user_path(user))
         end
-        format.json { render json: { result: "1", token: user_session.token }, status: 200 }
+        format.json { render json: { result: "1", token: user.session.token }, status: 200 }
       else
         format.html do
           flash.now.alert = "Incorrect e-mail or password..."
@@ -37,7 +37,7 @@ class SessionsController < ApplicationController
 
   def destroy
     if current_user
-      current_user.sessions.delete_all
+      current_user.session.destroy
       session[:user_id] = nil
       respond_to do |format|
         format.html { redirect_to((root_url), notice: "Successfully logged out...") }

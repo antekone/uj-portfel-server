@@ -4,7 +4,7 @@ class Session < ActiveRecord::Base
   
   before_create :generate_token
   
-  scope :active, where("updated_at > ?", Time.now - 30.minutes)
+  scope :active, where("updated_at > ?", Time.now - 2.hours)
   
   private
     def generate_token

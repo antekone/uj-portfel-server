@@ -3,7 +3,8 @@ class InvitationsController < ApplicationController
   before_filter :load_invitation, :only => [:show, :edit, :update, :destroy]
   
   def index
-    respond_with(@invitations = Invitation.all)
+    @invitations = current_user.invitations
+    respond_with(@invitations)
   end
   
   def show
@@ -11,11 +12,11 @@ class InvitationsController < ApplicationController
   end
   
   def new
-    respond_with(@invitation = Invitation.new)
+    respond_with(@invitation = current_user.sent_invitations.new)
   end
   
   def create
-    @invitation = Invitation.new(params[:invitation])
+    @invitation = current_user.sent_invitations.new(params[:invitation])
     @invitation.save
     respond_with(@invitation)
   end
@@ -36,7 +37,7 @@ class InvitationsController < ApplicationController
   
   private
     def load_invitation
-      @invitation = Invitation.find(params[:id])
+      @invitation = current_user.sent_invitations.find(params[:id])
     end
 end
 
