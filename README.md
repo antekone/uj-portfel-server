@@ -5,7 +5,12 @@ Obsługa portfela - część serwerowa.
 ## Użytkownicy  
 * ### rejestracja nowego użytkownika  
   Po rejestracji tworzony jest profil użytkownika oraz konto podstawowe z domyślną walutą PLN.
-  Zwracany jest również TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.
+  Zwracany jest również TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.  
+  Dostępne atrybuty:
+    * email
+    * phone
+    * password
+    * password_confirmation
   
   `curl -v -X POST -d "user[email]=foo@bar.com&user[phone]=123456&user[password]=abc123&user[password_confirmation]=abc123" http://localhost:3000/users.json`
   
@@ -46,7 +51,10 @@ Obsługa portfela - część serwerowa.
 ## Sesje
 * ### logowanie  
   Aby zalogować się do systemu trzeba podać swój e-mail i hasło.
-  Zwracany jest TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.
+  Zwracany jest TOKEN, który posłuży do autentykacji każdego żądania w systemie. Ważność TOKENa to 2h.  
+  Wysyłane atrybuty:
+    * email
+    * password
   
   `curl -v -X POST -d "email=foo@bar.com&password=abc123" http://localhost:3000/login.json`
   
@@ -94,12 +102,18 @@ Obsługa portfela - część serwerowa.
   __Poprawny rezultat__
     * Status HTTP: 200
     * Zawartość:  
-      `{"balance_in_cents":0,  "created_at":"2012-06-18T11:14:07Z",  "currency":"PLN",  "id":5,  "public":true,  "updated_at":"2012-06-18T11:14:07Z",  "user_id":3,  "balance":0.0}`
+      `{"balance_in_cents":0,  "created_at":"2012-06-18T11:14:07Z",  "currency":"PLN",  "id":5,  "public":true,  "updated_at":"2012-06-18T11:14:07Z",  "user_id":3,  "balance":0.0}`  
+  
+  __Błędny status__ - brak konta o danym ID dla zalogowanego użytkownika
+    * Status HTTP: 404
 
 * ### dodawanie nowego  
   Utworzenie nowego konta spowoduje przypisanie go do zalogowanego użytkownika.  
   `curl -v -X POST -d "account[currency]=PLN&account[public]=true&account[balance]=0.0" http://localhost:3000/accounts.json?token=TOKEN`
-  Dostępne waluty: "PLN", "USD", "EUR"
+  Dostępne atrybuty:
+    * public - flaga true/false
+    * balance - bilans konta, dla nowych kont może mieć wartość początkową inną niż 0.0, dla edycji brak możliwości zmiany
+    * currency - dostępne waluty: "PLN", "USD", "EUR"
   
   __Poprawny rezultat__
     * Status HTTP: 201
@@ -132,3 +146,61 @@ Obsługa portfela - część serwerowa.
   __Poprawny rezultat__
     * Status HTTP: 204
   
+## Transakcje
+* ### lista wszystkich transakcji  
+  Pobieranie listy dla zalogowanego użytkownika
+  `curl -v -X GET http://localhost:3000/transactions.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość (tablica):  
+      `[{"account_id":5,  "attachment_content_type":null,  "attachment_file_name":null,  "attachment_file_size":null,  "attachment_updated_at":null,  "created_at":"2012-06-18T12:36:19Z",  "date":"2012-06-18", "description":"",  "id":5,  "updated_at":"2012-06-18T12:36:19Z",  "user_id":3,  "value_in_cents":55500,  "value":555.0}]`
+
+* ### podgląd jednej transakcji  
+  Pobieranie parametrów transakcji o wskazanym ID zalogowanego użytkownika
+  `curl -v -X GET http://localhost:3000/transactions/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 200
+    * Zawartość:  
+      `{"account_id":5,  "attachment_content_type":null,  "attachment_file_name":null,  "attachment_file_size":null,  "attachment_updated_at":null,  "created_at":"2012-06-18T12:36:19Z",  "date":"2012-06-18", "description":"",  "id":5,  "updated_at":"2012-06-18T12:36:19Z",  "user_id":3,  "value_in_cents":55500,  "value":555.0}`
+      
+  __Błędny status__ - brak transakcji o danym ID dla zalogowanego użytkownika
+    * Status HTTP: 404
+
+* ### dodawanie nowego  
+  Utworzenie nowej transakcji spowoduje przypisanie go do zalogowanego użytkownika oraz uaktualni bilans konta.  
+  Dostępne atrybuty:
+    * account_id - ID konta do którego ma być przypisana transakcja, obsługuje własnościowe oraz dzielone konta użytkownika
+    * date - data transakcji, format np. 01-01-2012 lub 2012-02-02
+    * description - opis tekstowy (opcjonalny)
+    * value - wartość, podana z przecinkiem dla groszy
+    * tag_names - słowa kluczowe, wstawianie wielu po przecinku
+    * attachment - załącznik, plik bez walidacji formatu, do obrazków/dźwięków i itd
+    
+  `curl -v -X POST -d "transaction[account_id]=ID&transaction[date]=2011-11-11&transaction[description]=Foo bar baz&transaction[value]=19.99&transaction[tag_names]=foo,bar,baz" http://localhost:3000/transactions.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 201
+    * Zawartość:  
+      `{"account_id":5,  "attachment_content_type":null,  "attachment_file_name":null,  "attachment_file_size":null,  "attachment_updated_at":null,  "created_at":"2012-06-18T12:36:19Z",  "date":"2012-06-18", "description":"",  "id":5,  "updated_at":"2012-06-18T12:36:19Z",  "user_id":3,  "value_in_cents":55500,  "value":555.0}`
+
+  __Błędy walidacji__
+    * Status HTTP: 422
+    * Zawartość:  
+      `{"errors":{"user_id":["can't be blank"]}}` - brak użytkownika  
+      `{"errors":{"account_id":["can't be blank"]}}` - brak wybranego konta
+
+* ### edycja  
+  `curl -v -X PUT -d "transactions[value]=299.99" http://localhost:3000/transactions/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 204
+
+  __Błędy walidacji__ - identyczne jak przy tworzeniu.
+
+* ### usuwanie
+  `curl -v -X DELETE http://localhost:3000/transactions/ID.json?token=TOKEN`
+
+  __Poprawny rezultat__
+    * Status HTTP: 204
