@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authorize!, except: [:index, :new, :create]
+  before_filter :authorize!, except: [:new, :create]
   before_filter :load_user, :only => [:edit, :update, :destroy]
   
   def index
