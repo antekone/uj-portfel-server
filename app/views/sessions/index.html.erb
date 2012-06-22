@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:user) %></th>
       <th><%= model_class.human_attribute_name(:token) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:updated_at) %></th>
@@ -14,6 +15,7 @@
     <% @sessions.each do |session| %>
       <tr>
         <td><%= session.id %></td>
+        <td><%= session.user.email_with_phone %></td>
         <td><%= session.token %></td>
         <td><%= l session.created_at, format: :long %></td>
         <td><%= l session.updated_at, format: :long %></td>
