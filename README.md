@@ -111,6 +111,7 @@ Obsługa portfela - część serwerowa.
   Utworzenie nowego konta spowoduje przypisanie go do zalogowanego użytkownika.  
   `curl -v -X POST -d "account[currency]=PLN&account[public]=true&account[balance]=0.0" http://localhost:3000/accounts.json?token=TOKEN`
   Dostępne atrybuty:
+    * name - nazwa konta (String)
     * public - flaga true/false
     * balance - bilans konta, dla nowych kont może mieć wartość początkową inną niż 0.0, dla edycji brak możliwości zmiany
     * currency - dostępne waluty: "PLN", "USD", "EUR"

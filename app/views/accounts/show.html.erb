@@ -2,8 +2,12 @@
 <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 
 <p>
-  <strong><%= model_class.human_attribute_name(:user_id) %>:</strong><br>
-  <%= @account.user_id %>
+  <strong><%= model_class.human_attribute_name(:user) %>:</strong><br>
+  <%= @account.user.email_with_phone %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:name) %>:</strong><br>
+  <%= @account.name %>
 </p>
 <p>
   <strong><%= model_class.human_attribute_name(:public) %>:</strong><br>

@@ -2,7 +2,7 @@ class Account < ActiveRecord::Base
   belongs_to :user
   has_many :transactions, dependent: :delete_all
   
-  attr_accessible :public, :currency, :balance
+  attr_accessible :name, :public, :currency, :balance
   
   validates :user_id, presence: true
   validates :currency, presence: true

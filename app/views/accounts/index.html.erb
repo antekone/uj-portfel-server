@@ -5,6 +5,7 @@
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:public) %></th>
       <th><%= model_class.human_attribute_name(:currency) %></th>
       <th><%= model_class.human_attribute_name(:balance) %></th>
@@ -18,6 +19,7 @@
       <tr>
         <td><%= link_to account.id, account_path(account) %></td>
         <td><%= link_to account.user.email_with_phone, user_path(account.user_id) %></td>
+        <td><%= account.name %></td>
         <td><%= account.public %></td>
         <td><%= account.currency %></td>
         <td><%=money account.balance, account.currency %></td>
