@@ -20,3 +20,4 @@
 /config/nginx.conf
 /config/environments/production.rb
 /public/assets/*
+/public/system/*

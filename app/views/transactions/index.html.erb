@@ -9,6 +9,7 @@
       <th><%= model_class.human_attribute_name(:value) %></th>
       <th><%= model_class.human_attribute_name(:date) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:attachment) %></th>
       <th><%= model_class.human_attribute_name(:tag_names) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:updated_at) %></th>
@@ -24,6 +25,7 @@
         <td><%= money transaction.value, transaction.account.currency %></td>
         <td><%=l transaction.date, format: :long %></td>
         <td><%= transaction.description %></td>
+        <td><%= link_to "Attachment", transaction.attachment.url if transaction.attachment.present? %></td>
         <td><%= transaction.tag_names %></td>
         <td><%=l transaction.created_at, format: :long %></td>
         <td><%=l transaction.updated_at, format: :long %></td>
